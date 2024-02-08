@@ -13,45 +13,67 @@ class BookController extends Controller
 
     public function makeRequest($search, $country, $category, $title)
     {
+        $api = env('API_KEY');
         $date = date("Y-m-d");
-        if (!empty($search)) {
-            // dd($search);
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-            ])->get('https://newsapi.org/v2/everything', [
-                'q' => $search,
-                'sortBy' => 'publishedAt',
-                'apiKey' => '882ca770482a466d85e735b2a60a6887',
-            ]);
-        } elseif ($title) {
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-            ])->get('https://newsapi.org/v2/everything', [
-                'q' => $title,
-                'from' => $date,
-                'sortBy' => 'publishedAt',
-                'apiKey' => '882ca770482a466d85e735b2a60a6887',
-            ]);
-        } elseif ($category) {
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-            ])->get('https://newsapi.org/v2/top-headlines', [
-                'category' => $category,
-                'from' => $date,
-                'sortBy' => 'publishedAt',
-                'apiKey' => '882ca770482a466d85e735b2a60a6887',
-            ]);
-        } elseif (!empty($country)) {
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-            ])->get('https://newsapi.org/v2/top-headlines', [
-                'country' => $country,
-                // 'category' => $category,
-                'from' => $date,
-                'sortBy' => 'publishedAt',
-                'apiKey' => '882ca770482a466d85e735b2a60a6887',
-            ]);
+        $url = 'https://newsapi.org/v2/';
+        $response = null;
+        $type = '';
+        $headers = [
+            'Content-Type' => 'application/json',
+        ];
+
+        switch (true) {
+            case isset($search):
+                $type = 'everything';
+                $params = [
+                    'q' => $search,
+                    'sortBy' => 'publishedAt',
+                    'apiKey' => $api,
+                ];
+                break;
+
+            case isset($title):
+                $type = 'everything';
+                $params = [
+                    'q' => $title,
+                    'from' => $date,
+                    'sortBy' => 'publishedAt',
+                    'apiKey' => $api,
+                ];
+                break;
+
+            case isset($category):
+                $type = 'top-headlines';
+                $params = [
+                    'category' => $category,
+                    'from' => $date,
+                    'sortBy' => 'publishedAt',
+                    'apiKey' => $api,
+                ];
+                break;
+
+            case isset($country):
+                $type = 'top-headlines';
+                $params = [
+                    'country' => $country,
+                    'from' => $date,
+                    'sortBy' => 'publishedAt',
+                    'apiKey' => $api,
+                ];
+                break;
+
+            default:
+                // Handle the default case if needed
+                break;
         }
+
+        if (!empty($type)) {
+            $fullUrl = $url . $type;
+            $response = Http::withHeaders($headers)->get($fullUrl, $params);
+        }
+
+        // Use $response as needed
+
         // https://newsapi.org/v2/everything?q={$title}&from=2024-01-03&sortBy=publishedAt&apiKey=
         // 6cc7195b783e471dbc539dd0678f593a
         // 882ca770482a466d85e735b2a60a6887
