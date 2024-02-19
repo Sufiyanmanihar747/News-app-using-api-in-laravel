@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\BookController;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,8 +18,9 @@ use Illuminate\Support\Facades\Route;
 //     return view('index');
 // });
 
-Route::get('/news', [BookController::class, 'country']);
-Route::get('/news/search', [BookController::class, 'search'])->name('news.search');
-Route::get('/news/country', [BookController::class, 'country'])->name('news.country');
-Route::get('/news/show{request}', [BookController::class, 'show'])->name('news.show');
-// Route::resource('news', BookController::class);
+Route::get('/news', [ArticleController::class, 'country']);
+Route::get('/news/search', [ArticleController::class, 'search'])->name('news.search');
+Route::get('/news/country', [ArticleController::class, 'country'])->name('news.country');
+Route::get('/news/category', [ArticleController::class, 'category'])->name('news.category');
+Route::get('/news/show', [ArticleController::class, 'show'])->name('news.show');
+// Route::resource('news', ArticleController::class);

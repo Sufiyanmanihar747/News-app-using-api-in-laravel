@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-class BookController extends Controller
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
 
-    public function makeRequest($search, $country, $category, $title)
+    public function makeRequest($search, $country, $category)
     {
+        $default = 'in';
         $api = env('API_KEY');
         $date = date("Y-m-d");
         $url = 'https://newsapi.org/v2/';
@@ -27,16 +28,6 @@ class BookController extends Controller
                 $type = 'everything';
                 $params = [
                     'q' => $search,
-                    'sortBy' => 'publishedAt',
-                    'apiKey' => $api,
-                ];
-                break;
-
-            case isset($title):
-                $type = 'everything';
-                $params = [
-                    'q' => $title,
-                    'from' => $date,
                     'sortBy' => 'publishedAt',
                     'apiKey' => $api,
                 ];
@@ -62,8 +53,24 @@ class BookController extends Controller
                 ];
                 break;
 
+            case isset($category):
+                $type = 'top-headlines';
+                $params = [
+                    'category' => $category,
+                    'from' => $date,
+                    'sortBy' => 'publishedAt',
+                    'apiKey' => $api,
+                ];
+                break;
+
             default:
-                // Handle the default case if needed
+                $type = 'top-headlines';
+                $params = [
+                    'country' => $default,
+                    'from' => $date,
+                    'sortBy' => 'publishedAt',
+                    'apiKey' => $api,
+                ];
                 break;
         }
 
@@ -72,25 +79,23 @@ class BookController extends Controller
             $response = Http::withHeaders($headers)->get($fullUrl, $params);
         }
 
-        // Use $response as needed
-
-        // https://newsapi.org/v2/everything?q={$title}&from=2024-01-03&sortBy=publishedAt&apiKey=
-        // 6cc7195b783e471dbc539dd0678f593a
-        // 882ca770482a466d85e735b2a60a6887
-        // a7bf91fa64ab446db77fc74f76942d83
-        // dd($request);
-
         if ($response->successful()) {
             return $response->json();
         } else {
             $error = "HTTP Error #" . $response->status();
             return response()->json($error);
         }
+
+        // https://newsapi.org/v2/everything?q={$title}&from=2024-01-03&sortBy=publishedAt&apiKey=
+        // 6cc7195b783e471dbc539dd0678f593a
+        // 882ca770482a466d85e735b2a60a6887
+        // a7bf91fa64ab446db77fc74f76942d83
+        // dd($request);
     }
 
     public function country(Request $request)
     {
-        $country = $request->input('country', 'in');
+        $country = $request->input('country');
         $articles = $this->makeRequest(null, $country, null, null);
         return view('index', compact('articles'));
     }
@@ -104,11 +109,18 @@ class BookController extends Controller
         return view('index', compact('articles'));
     }
 
-    public function show(Request $title)
+    public function category(Request $request)
     {
-        dump($title);
-        $article = $this->makeRequest(null, null, null, $title);
-        dd($article);
+        $category = $request->input('category');
+        $articles = $this->makeRequest(null, null, $category, null);
+        // dd($articles);
+        return view('index', compact('articles'));
+    }
+
+    public function show(Request $request)
+    {
+        $article = $request->query();
         return view('show', compact('article'));
     }
+
 }

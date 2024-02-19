@@ -5,8 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <title>New paper</title>
   <style>
     .btn {
@@ -51,39 +50,50 @@
       background: #3a0ca3;
       transition: background 0s;
     }
+
+    .custom-card {
+      width: 22rem;
+      border-radius: 9px;
+      background: #f8f9fa;
+      box-shadow: 15px 15px 30px #a1a1a1, -15px -15px 30px #ffffff;
+    }
   </style>
 </head>
 
 <body style="background-color: #d9d9d9;">
-  <nav class="navbar navbar-expand-lg position-fixed w-100 px-5"
-    style="top:0; z-index: 100;backdrop-filter: blur(10px);background-color: #ffffff63;">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Newsapp</a>
+  <nav class="navbar navbar-expand-lg navbar-light position-fixed w-100 px-4 py-0"
+    style="top: 0; z-index: 100; backdrop-filter: blur(10px); background-color: #ffffff63;">
+    <div class="container-fluid p-0">
+      <a class="navbar-brand" href="{{ route('news.country') }}">
+        <img src="https://themayanagari.com/wp-content/uploads/2021/05/Breaking-News-Png-Image-2-768x478.jpg.webp"
+          style="width: 100px; height: auto; margin: 0 40px;" alt="">
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center" style="gap: 32px;">
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('news.country', ['request' => 'india']) }}"><b>Home</b></a>
+            <a class="nav-link" href="{{ route('news.country', ['country' => 'in']) }}"><b>HOME</b></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('news.country', ['request' => 'technology']) }}"><b>Technology</b></a>
+            <a class="nav-link" href="{{ route('news.category', ['category' => 'technology']) }}"><b>TECHNOLOGY</b></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('news.country', ['request' => 'cricket']) }}"><b>Cricket</b></a>
+            <a class="nav-link" href="{{ route('news.category', ['category' => 'cricket']) }}"><b>CRICKET</b></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('news.country', ['request' => 'politics']) }}"><b>Politics</b></a>
+            <a class="nav-link" href="{{ route('news.category', ['category' => 'politics']) }}"><b>POLITICS</b></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('news.country', ['request' => 'programming']) }}"><b>Programming</b></a>
+            <a class="nav-link"
+              href="{{ route('news.category', ['category' => 'programming']) }}"><b>PROGRAMMING</b></a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-              <b>Country</b>
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+              data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <b>COUNTRY</b>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="{{ route('news.country', ['country' => 'in']) }}">India</a>
@@ -98,15 +108,11 @@
       </div>
     </div>
   </nav>
+
   <main>
     @yield('content')
   </main>
 </body>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </html>
